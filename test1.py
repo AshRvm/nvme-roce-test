@@ -84,5 +84,7 @@ if __name__ == '__main__':
         def test_ne(self):
             '''Check that two TransportId objects can be tested for non-equality'''
             self.assertNotEqual(self.tid, self.other_tid)
+        
+        # check
 
     unittest.main()
