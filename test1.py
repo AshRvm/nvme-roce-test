@@ -1,19 +1,22 @@
 #!/usr/bin/python3
+import unittest
 from staslib import stas
 
 if __name__ == '__main__':
 
-    class Test():
+    class Test(unittest.TestCase):
         '''Unit test for class TransportId'''
 
-        TRANSPORT    = 'tcp'
-        TRADDR       = '10.10.10.10'
+        TRANSPORT    = 'rdma'
+        TRADDR       = '10.197.155.169'
+        OTHER_TRADDR = '1.1.1.1'
         SUBSYSNQN    = 'nqn.1988-11.com.dell:SFSS:2:20220208134025e8'
-        TRSVCID      = '8009'
-        HOST_TRADDR  = '1.2.3.4'
+        TRSVCID      = '4420'
+        HOST_TRADDR  = '10.197.155.35'
         HOST_IFACE   = 'wlp0s20f3'
 
-        def __init__(self):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
             self.cid = {
                 'transport':   Test.TRANSPORT,
                 'traddr':      Test.TRADDR,
@@ -22,8 +25,17 @@ if __name__ == '__main__':
                 'host-traddr': Test.HOST_TRADDR,
                 'host-iface':  Test.HOST_IFACE,
             }
+            self.other_cid = {
+                'transport':   Test.TRANSPORT,
+                'traddr':      Test.OTHER_TRADDR,
+                'subsysnqn':   Test.SUBSYSNQN,
+                'trsvcid':     Test.TRSVCID,
+                'host-traddr': Test.HOST_TRADDR,
+                'host-iface':  Test.HOST_IFACE,
+            }
 
             self.tid = stas.TransportId(self.cid)
+            self.other_tid = stas.TransportId(self.other_cid)
 
         def test_key(self):
             '''Check that a key exists'''
@@ -65,5 +77,12 @@ if __name__ == '__main__':
             '''Check that a TransportId can be represented as a string'''
             self.assertTrue(str(self.tid).startswith(f'({Test.TRANSPORT},'))
 
-    A = Test()
-    print(f'{A.test_key()}, {A.test_hash()}, {A.test_transport()}')
+        def test_eq(self):
+            '''Check that two TransportId objects can be tested for equality'''
+            self.assertEqual(self.tid, stas.TransportId(self.cid))
+
+        def test_ne(self):
+            '''Check that two TransportId objects can be tested for non-equality'''
+            self.assertNotEqual(self.tid, self.other_tid)
+
+    unittest.main()
