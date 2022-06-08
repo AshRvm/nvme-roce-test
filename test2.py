@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-from staslib import stas
+# from staslib import stas
+import stas_copy
 
 if __name__ == "__main__":
     cid = {
@@ -12,6 +13,5 @@ if __name__ == "__main__":
     }
 
     tid = stas.TransportId(cid)
-    # comment
 
     print(str(tid))
