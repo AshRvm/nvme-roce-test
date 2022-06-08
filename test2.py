@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # from staslib import stas
-import stas_copy
+import stas_copy as stas
 
 if __name__ == "__main__":
     cid = {
