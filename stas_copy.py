@@ -1395,7 +1395,12 @@ class Controller:  # pylint: disable=too-many-instance-attributes
                 # indicate the failure, and start a slow re-try period.
                 self._retry_connect_tmr.set_timeout(Controller.CONNECT_RETRY_PERIOD_SEC)
                 LOG.error('%s Failed to connect to controller. %s', self.id, getattr(err, 'message', err))
-
+                LOG.debug(
+                    'Controller._on_connect_fail()      - %s %s. Retry in %s sec.',
+                    self.id,
+                    err,
+                    self._retry_connect_tmr.get_timeout(),
+                )
             LOG.debug(
                 'Controller._on_connect_fail()      - %s %s. Retry in %s sec.',
                 self.id,
