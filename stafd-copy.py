@@ -561,6 +561,7 @@ class Staf(stas.Service):
 
 # ******************************************************************************
 STAF = Staf()
+print("CHECK")
 STAF.run()
 
 STAF = None
