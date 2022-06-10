@@ -468,6 +468,8 @@ class NvmeOptions:  # Singleton
             'host_iface': KERNEL_VERSION >= defs.KERNEL_IFACE_MIN_VERSION,
         }
 
+        print(KERNEL_VERSION, defs.KERNEL_TP8013_MIN_VERSION, defs.KERNEL_IFACE_MIN_VERSION)
+
         # If some of the options are False, we need to check wether they can be
         # read from '/dev/nvme-fabrics'. This method allows us to determine that
         # an older kernel actually supports a specific option because it was
