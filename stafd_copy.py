@@ -162,6 +162,7 @@ class Dc(stas.Controller):
 
     def __init__(self, tid: stas.TransportId, log_pages=None):
         super().__init__(NVME_ROOT, NVME_HOST, tid, discovery_ctrl=True)
+        print("STAF :: Dc init")
         self._register_op = None
         self._get_log_op = None
         self._log_pages = log_pages if log_pages else list()  # Log pages cache
@@ -448,6 +449,7 @@ class Staf(stas.Service):
     # ==========================================================================
     def __init__(self):
         super().__init__(self._reload_hdlr)
+        print("STAF :: Staf init")
 
         self._avahi = avahi.Avahi(self._sysbus, self._avahi_change)
         self._avahi.config_stypes(stas.CNF.get_stypes())

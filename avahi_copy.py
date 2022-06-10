@@ -88,7 +88,7 @@ class Avahi:  # pylint: disable=too-many-instance-attributes
 
     # ==========================================================================
     def __init__(self, sysbus, change_cb):
-        print("AVAHI INIT")
+        print("AVAHI :: Avahi init")
         self._change_cb = change_cb
         self._services = dict()
         self._sysbus = sysbus

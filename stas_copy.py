@@ -153,7 +153,7 @@ class Configuration:
     '''Read and cache configuration file.'''
 
     def __init__(self, conf_file='/dev/null'):
-        print("Config init")
+        print("STAS :: Config init")
         self._defaults = {
             ('Global', 'tron'): 'false',
             ('Global', 'persistent-connections'): 'true',
@@ -327,7 +327,7 @@ class SysConfiguration:
     '''Read and cache the host configuration file.'''
 
     def __init__(self, conf_file='/dev/null'):
-        print("SysConfig init")
+        print("STAS :: SysConfig init")
         self._conf_file = conf_file
         self.reload()
 
@@ -470,7 +470,7 @@ class NvmeOptions:  # Singleton
             'host_iface': KERNEL_VERSION >= defs.KERNEL_IFACE_MIN_VERSION,
         }
 
-        print("NVME Options init", KERNEL_VERSION, defs.KERNEL_TP8013_MIN_VERSION, defs.KERNEL_IFACE_MIN_VERSION, defs.WELL_KNOWN_DISC_NQN)
+        print("STAS :: NVME Options init", KERNEL_VERSION, defs.KERNEL_TP8013_MIN_VERSION, defs.KERNEL_IFACE_MIN_VERSION, defs.WELL_KNOWN_DISC_NQN)
 
         # If some of the options are False, we need to check wether they can be
         # read from '/dev/nvme-fabrics'. This method allows us to determine that
@@ -621,7 +621,7 @@ class Udev:
         self._observer = MonitorObserver(self._monitor)
         self._sig_id = self._observer.connect('device-event', self._device_event)
         self._monitor.start()
-        print("UDEV init")
+        print("STAS :: UDEV init")
 
     def _release_resources(self):
         if self._sig_id is not None:
@@ -902,7 +902,7 @@ class TransportId:
             'host-iface':  str, # [optional]
         }
         '''
-        print("Transport init")
+        print("STAS :: Transport init")
 
         self._transport = cid.get('transport')
         self._traddr    = cid.get('traddr')
@@ -983,7 +983,7 @@ class NameResolver:
     '''@brief DNS resolver to convert host names to IP addresses.'''
 
     def __init__(self):
-        print("NameResolver init")
+        print("STAS :: NameResolver init")
         self._resolver = Gio.Resolver.get_default()
 
     def resolve_ctrl_async(self, cancellable, controllers: dict, callback):
@@ -1043,7 +1043,7 @@ class AsyncCaller(GObject.Object):
         @param user_args: arguments passed to @user_function
         '''
         super().__init__()
-        print("AsyncCaller init")
+        print("STAS :: AsyncCaller init")
         self._user_function = user_function
         self._user_args = user_args
 
@@ -1104,7 +1104,7 @@ class AsyncOperationWithRetry:  # pylint: disable=too-many-instance-attributes
         @param operation: Operation (i.e. a function) to execute asynchronously
         @param op_args: Arguments passed to operation
         '''
-        print("AsyncOperationWithRetry init")
+        print("STAS :: AsyncOperationWithRetry init")
 
         self._cancellable = Gio.Cancellable()
         self._operation   = operation
@@ -1215,7 +1215,7 @@ class Controller:  # pylint: disable=too-many-instance-attributes
     FAST_CONNECT_RETRY_PERIOD_SEC = 3
 
     def __init__(self, root, host, tid: TransportId, discovery_ctrl=False):
-        print("Controller init")
+        print("STAS :: Controller init")
         self._root              = root
         self._host              = host
         self._tid               = tid
@@ -1518,7 +1518,7 @@ class Service:  # pylint: disable=too-many-instance-attributes
     '''@brief Base class used to manage a STorage Appliance Service'''
 
     def __init__(self, reload_hdlr):
-        print("Service init")
+        print("STAS :: Service init")
         self._lkc_file     = os.path.join(os.environ.get('RUNTIME_DIRECTORY'), 'last-known-config.pickle')
         self._loop         = GLib.MainLoop()
         self._cancellable  = Gio.Cancellable()
