@@ -18,7 +18,7 @@ import dasbus.client.proxy
 import dasbus.client.observer
 from gi.repository import GLib
 from staslib import defs
-import stas_copy
+import stas_copy as stas
 
 
 def txt2dict(txt: list):
