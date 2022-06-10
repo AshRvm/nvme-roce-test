@@ -320,6 +320,7 @@ class Configuration:
 
 
 CNF = Configuration()  # Singleton
+print(f"STAS :: CNF --- stypes :: {CNF.get_stypes()} --- controllers :: {CNF.get_controllers()}")
 
 
 # ******************************************************************************
