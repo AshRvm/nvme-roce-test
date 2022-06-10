@@ -588,7 +588,7 @@ class Staf(stas.Service):
 # ******************************************************************************
 if __name__ == '__main__':
     STAF = Staf()
-    STAF.run()
+    # STAF.run()
 
     STAF = None
     ARGS = None
