@@ -110,7 +110,7 @@ if ARGS.idl:
 # We want to allow running stafd with the --version and --idl options and exit
 # without having to import stas and avahi.
 # pylint: disable=wrong-import-position
-import stas_copy as stas
+import stas_copy as stas 
 import avahi_copy as avahi
 
 # Before going any further, make sure the script is allowed to run.
@@ -217,9 +217,8 @@ class Dc(stas.Controller):
 
     def _on_udev_remove(self, udev):
         super()._on_udev_remove(udev)
-
-        # Defer attempt to connect to the next main loop's idle period.
-        GLib.idle_add(self._try_to_connect)
+        if self._try_to_connect_deferred:
+            self._try_to_connect_deferred.schedule()
 
     def _find_existing_connection(self):
         return stas.UDEV.find_nvme_dc_device(self.tid)
@@ -422,10 +421,10 @@ class Staf(stas.Service):
 
         def get_log_pages(  # pylint: disable=no-self-use,too-many-arguments
             self, transport, traddr, trsvcid, host_traddr, host_iface, subsysnqn
-        ) -> str:
+        ) -> list:
             '''@brief D-Bus method used to retrieve the discovery log pages from one controller'''
             controller = STAF.get_controller(transport, traddr, trsvcid, host_traddr, host_iface, subsysnqn)
-            return controller.log_pages() if controller else '[]'
+            return controller.log_pages() if controller else list()
 
         def get_all_log_pages(self, detailed) -> str:  # pylint: disable=no-self-use
             '''@brief D-Bus method used to retrieve the discovery log pages from all controllers'''
@@ -439,7 +438,7 @@ class Staf(stas.Service):
                 )
             return json.dumps(log_pages)
 
-        def list_controllers(self, detailed) -> str:  # pylint: disable=no-self-use
+        def list_controllers(self, detailed) -> list:  # pylint: disable=no-self-use
             '''@brief Return the list of discovery controller IDs'''
             return [
                 controller.details() if detailed else controller.controller_id_dict()
@@ -474,30 +473,28 @@ class Staf(stas.Service):
     def _release_resources(self):
         stas.LOG.debug('Staf._release_resources()')
         super()._release_resources()
-        self._avahi.kill()
-        self._avahi = None
-
-        self._lkc_file = None
+        if self._avahi:
+            self._avahi.kill()
+            self._avahi = None
 
     def _load_last_known_config(self):
         try:
             with open(self._lkc_file, 'rb') as file:
                 config = pickle.load(file)
-        except FileNotFoundError as ex:
-            stas.LOG.debug('Staf._load_last_known_config()     - %s: %s', self._lkc_file, ex)
-            config = dict()
+        except FileNotFoundError:
+            return dict()
 
-        stas.LOG.debug('Staf._load_last_known_config()     - config=%s', config)
+        stas.LOG.debug('Staf._load_last_known_config()     - DC count = %s', len(config))
         return {tid: Dc(tid, log_pages) for tid, log_pages in config.items()}
 
     def _dump_last_known_config(self, controllers):
         try:
             with open(self._lkc_file, 'wb') as file:
                 config = {tid: dc.log_pages() for tid, dc in controllers.items()}
-                stas.LOG.debug('Staf._dump_last_known_config()     - config=%s', config)
+                stas.LOG.debug('Staf._dump_last_known_config()     - DC count = %s', len(config))
                 pickle.dump(config, file)
         except FileNotFoundError as ex:
-            stas.LOG.error('Unable to save last known config to %s: %s', self._lkc_file, ex)
+            stas.LOG.error('Unable to save last known config: %s', ex)
 
     def _keep_connections_on_exit(self):
         '''@brief Determine whether connections should remain when the
@@ -559,9 +556,9 @@ class Staf(stas.Service):
 
         discovered_ctrl_list = self._avahi.get_controllers()
         referral_ctrl_list = self._referrals()
-        stas.LOG.debug('Staf._config_ctrls_finish()        - configured_ctrl_list  = %s', configured_ctrl_list)
-        stas.LOG.debug('Staf._config_ctrls_finish()        - discovered_ctrl_list  = %s', discovered_ctrl_list)
-        stas.LOG.debug('Staf._config_ctrls_finish()        - referral_ctrl_list    = %s', referral_ctrl_list)
+        stas.LOG.debug('Staf._config_ctrls_finish()        - configured_ctrl_list = %s', configured_ctrl_list)
+        stas.LOG.debug('Staf._config_ctrls_finish()        - discovered_ctrl_list = %s', discovered_ctrl_list)
+        stas.LOG.debug('Staf._config_ctrls_finish()        - referral_ctrl_list   = %s', referral_ctrl_list)
 
         controllers = stas.remove_blacklisted(configured_ctrl_list + discovered_ctrl_list + referral_ctrl_list)
         controllers = stas.remove_invalid_addresses(controllers)
@@ -571,8 +568,8 @@ class Staf(stas.Service):
         controllers_to_add = new_controller_ids - cur_controller_ids
         controllers_to_del = cur_controller_ids - new_controller_ids
 
-        stas.LOG.debug('Staf._config_ctrls_finish()        - controllers_to_add    = %s', list(controllers_to_add))
-        stas.LOG.debug('Staf._config_ctrls_finish()        - controllers_to_del    = %s', list(controllers_to_del))
+        stas.LOG.debug('Staf._config_ctrls_finish()        - controllers_to_add   = %s', list(controllers_to_add))
+        stas.LOG.debug('Staf._config_ctrls_finish()        - controllers_to_del   = %s', list(controllers_to_del))
 
         for tid in controllers_to_del:
             controller = self._controllers.pop(tid, None)
@@ -589,7 +586,6 @@ class Staf(stas.Service):
 # ******************************************************************************
 if __name__ == '__main__':
     STAF = Staf()
-    print("CHECK")
     STAF.run()
 
     STAF = None
