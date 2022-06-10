@@ -110,7 +110,7 @@ if ARGS.idl:
 # We want to allow running stafd with the --version and --idl options and exit
 # without having to import stas and avahi.
 from staslib import avahi  # pylint: disable=wrong-import-position
-import stas_copy
+import stas_copy as stas
 
 # Before going any further, make sure the script is allowed to run.
 stas.check_if_allowed_to_continue()
