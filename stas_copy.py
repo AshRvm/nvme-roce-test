@@ -439,6 +439,7 @@ class SysConfiguration:
 
 
 SYS_CNF = SysConfiguration('/etc/stas/sys.conf')  # Singleton
+print(f"STAS :: SYS_CNF --- {SYS_CNF.hostnqn}, {SYS_CNF.hostid}, {SYS_CNF.hostsymname}")
 
 
 # ******************************************************************************
