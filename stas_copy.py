@@ -1335,6 +1335,7 @@ class Controller:  # pylint: disable=too-many-instance-attributes
         udev = self._find_existing_connection()
         if udev is not None:
             # A device already exists.
+            print("NOT NONEs")
             self._device = udev.sys_name
             LOG.debug(
                 'Controller._try_to_connect()       - %s Found existing control device: %s', self.id, udev.sys_name
