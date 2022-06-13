@@ -1521,7 +1521,7 @@ class Service:  # pylint: disable=too-many-instance-attributes
 
     def __init__(self, reload_hdlr):
         print("STAS :: Service init")
-        self._lkc_file     = os.path.join(os.environ.get('RUNTIME_DIRECTORY'), 'last-known-config.pickle')
+        self._lkc_file     = os.path.join(os.environ.get('RUNTIME_DIRECTORY'), 'last-known-config_test.pickle')
         self._loop         = GLib.MainLoop()
         self._cancellable  = Gio.Cancellable()
         self._resolver     = NameResolver()
