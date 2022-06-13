@@ -1330,12 +1330,14 @@ class Controller:  # pylint: disable=too-many-instance-attributes
         )
         self._ctrl.discovery_ctrl_set(self._discovery_ctrl)
 
+        print(f"STAS :: CONTROLLER :: _try_to_connect :: {self._root}, {self.tid.subsysnqn}, {self.tid.transport}, {self.tid.traddr}, {self.tid.trsvcid}, {self.tid.host_traddr}, {host_iface}")
+
         # Audit existing nvme devices. If we find a match, then
         # we'll just borrow that device instead of creating a new one.
         udev = self._find_existing_connection()
         if udev is not None:
             # A device already exists.
-            print("NOT NONEs")
+            print("DEVICE IS NOT NONE")
             self._device = udev.sys_name
             LOG.debug(
                 'Controller._try_to_connect()       - %s Found existing control device: %s', self.id, udev.sys_name
@@ -1344,6 +1346,7 @@ class Controller:  # pylint: disable=too-many-instance-attributes
                 self._on_connect_success, self._on_connect_fail, self._ctrl.init, self._host, int(udev.sys_number)
             )
         else:
+            print("DEVICE IS NONE")
             self._device = None
             cfg = { 'hdr_digest':  CNF.hdr_digest,
                     'data_digest': CNF.data_digest }
@@ -1360,6 +1363,7 @@ class Controller:  # pylint: disable=too-many-instance-attributes
                 cfg['keep_alive_tmo'] = DC_KATO_DEFAULT
 
             LOG.debug('Controller._try_to_connect()       - %s Connecting to nvme control with cfg=%s', self.id, cfg)
+            print(cfg)
             self._connect_op = AsyncOperationWithRetry(
                 self._on_connect_success, self._on_connect_fail, self._ctrl.connect, self._host, cfg
             )
