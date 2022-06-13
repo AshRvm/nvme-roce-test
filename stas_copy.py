@@ -1330,7 +1330,7 @@ class Controller:  # pylint: disable=too-many-instance-attributes
         )
         self._ctrl.discovery_ctrl_set(self._discovery_ctrl)
 
-        print(f"STAS :: CONTROLLER :: _try_to_connect :: {self._root}, {self.tid.subsysnqn}, {self.tid.transport}, {self.tid.traddr}, {self.tid.trsvcid}, {self.tid.host_traddr}, {host_iface}")
+        print(f"STAS :: CONTROLLER :: _try_to_connect :: {self.tid.subsysnqn}, {self.tid.transport}, {self.tid.traddr}, {self.tid.trsvcid}, {host_iface}")
 
         # Audit existing nvme devices. If we find a match, then
         # we'll just borrow that device instead of creating a new one.
