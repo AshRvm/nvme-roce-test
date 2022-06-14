@@ -589,7 +589,7 @@ class Staf(stas.Service):
 # ******************************************************************************
 if __name__ == '__main__':
     STAF = Staf()
-    STAF._config_ctrls_finish(())
+    # STAF._config_ctrls_finish(())
     STAF.run()
     
 
