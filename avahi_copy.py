@@ -273,6 +273,9 @@ class Avahi:  # pylint: disable=too-many-instance-attributes
         stypes_cur = set(self._service_browsers.keys())
         stypes_to_add = self._stypes - stypes_cur
         stypes_to_rm = stypes_cur - self._stypes
+        print(f"stypes curr :: {stypes_cur}")
+        print(f"stypes to add :: {stypes_to_add}")
+        print(f"stypes to rm :: {stypes_to_rm}")
 
         stas.LOG.debug('Avahi._configure_browsers()        - stypes_to_rm  = %s', list(stypes_to_rm))
         stas.LOG.debug('Avahi._configure_browsers()        - stypes_to_add = %s', list(stypes_to_add))
