@@ -88,7 +88,7 @@ class Avahi:  # pylint: disable=too-many-instance-attributes
 
     # ==========================================================================
     def __init__(self, sysbus, change_cb):
-        # print("AVAHI :: Avahi init")
+        print("AVAHI :: Avahi init")
         self._change_cb = change_cb
         self._services = dict()
         self._sysbus = sysbus
@@ -214,6 +214,7 @@ class Avahi:  # pylint: disable=too-many-instance-attributes
         @param stypes: A list of services types, e.g. ['_nvme-disc._tcp']
         '''
         self._stypes = set(stypes)
+        print(stypes)
         success = self._configure_browsers()
         if not success:
             self._kick_avahi_tmr.start()
