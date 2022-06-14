@@ -214,7 +214,7 @@ class Avahi:  # pylint: disable=too-many-instance-attributes
         @param stypes: A list of services types, e.g. ['_nvme-disc._tcp']
         '''
         self._stypes = set(stypes)
-        print(stypes)
+        # print(stypes)
         success = self._configure_browsers()
         if not success:
             self._kick_avahi_tmr.start()

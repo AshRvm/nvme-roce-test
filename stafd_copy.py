@@ -547,6 +547,7 @@ class Staf(stas.Service):
         ]
 
     def _config_ctrls_finish(self, configured_ctrl_list):
+        print("check")
         '''@brief Finish discovery controllers configuration after
         hostnames (if any) have been resolved.
         '''
