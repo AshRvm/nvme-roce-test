@@ -567,7 +567,8 @@ class Staf(stas.Service):
         controllers = stas.remove_invalid_addresses(controllers)
 
         for controller in controllers : 
-            controller.pop("host-iface")
+            if 'host-iface' in controller.keys() : 
+                controller.pop("host-iface")
 
         new_controller_ids = {stas.TransportId(controller) for controller in controllers}
         cur_controller_ids = set(self._controllers.keys())
