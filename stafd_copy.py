@@ -566,6 +566,8 @@ class Staf(stas.Service):
         controllers = stas.remove_blacklisted(configured_ctrl_list + discovered_ctrl_list + referral_ctrl_list)
         controllers = stas.remove_invalid_addresses(controllers)
 
+        controllers = [controller.pop("host-iface") for controller in controllers]
+
         new_controller_ids = {stas.TransportId(controller) for controller in controllers}
         cur_controller_ids = set(self._controllers.keys())
         controllers_to_add = new_controller_ids - cur_controller_ids
@@ -589,7 +591,6 @@ class Staf(stas.Service):
 # ******************************************************************************
 if __name__ == '__main__':
     STAF = Staf()
-    # STAF._config_ctrls_finish(())
     STAF.run()
     
 
