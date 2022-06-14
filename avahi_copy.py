@@ -408,10 +408,11 @@ class Avahi:  # pylint: disable=too-many-instance-attributes
             txt,
         )
 
+        # CHANGED TCP TO RDMA
         service = (interface, protocol, name, stype, domain)
         if service in self._services:
             self._services[service]['data'] = {
-                'transport':  txt.get('p', 'tcp'),
+                'transport':  txt.get('p', 'rdma'),
                 'traddr':     address,
                 'trsvcid':    str(port),
                 'host-iface': socket.if_indextoname(interface),

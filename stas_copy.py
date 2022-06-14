@@ -285,9 +285,10 @@ class Configuration:
                 pass
         return blacklist
 
+    # CHANGED TCP TO UDP
     def get_stypes(self):
         '''@brief Get the DNS-SD/mDNS service types.'''
-        return ['_nvme-disc._tcp'] if self.zeroconf_enabled() else list()
+        return ['_nvme-disc._udp'] if self.zeroconf_enabled() else list()
 
     def zeroconf_enabled(self):  # pylint: disable=missing-function-docstring
         return self.__get_value('Service Discovery', 'zeroconf')[0] == 'enabled'
