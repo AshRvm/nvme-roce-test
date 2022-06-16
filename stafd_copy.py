@@ -453,7 +453,6 @@ class Staf(stas.Service):
 
         self._avahi = avahi.Avahi(self._sysbus, self._avahi_change)
         self._avahi.config_stypes(stas.CNF.get_stypes())
-        print(self._avahi.info())
 
         # We don't want to apply configuration changes to nvme-cli right away.
         # Often, multiple changes will occur in a short amount of time (sub-second).
@@ -559,6 +558,7 @@ class Staf(stas.Service):
         ]
 
         discovered_ctrl_list = self._avahi.get_controllers()
+        print(self._avahi.info())
         referral_ctrl_list = self._referrals()
         stas.LOG.debug('Staf._config_ctrls_finish()        - configured_ctrl_list = %s', configured_ctrl_list)
         stas.LOG.debug('Staf._config_ctrls_finish()        - discovered_ctrl_list = %s', discovered_ctrl_list)
