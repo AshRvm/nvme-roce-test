@@ -567,9 +567,9 @@ class Staf(stas.Service):
         controllers = stas.remove_blacklisted(configured_ctrl_list + discovered_ctrl_list + referral_ctrl_list)
         controllers = stas.remove_invalid_addresses(controllers)
 
-        for controller in controllers : 
-            if 'host-iface' in controller.keys() : 
-                controller.pop("host-iface")
+        # for controller in controllers : 
+        #     if 'host-iface' in controller.keys() : 
+        #         controller.pop("host-iface")
 
         new_controller_ids = {stas.TransportId(controller) for controller in controllers}
         cur_controller_ids = set(self._controllers.keys())
