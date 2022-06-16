@@ -453,6 +453,7 @@ class Staf(stas.Service):
 
         self._avahi = avahi.Avahi(self._sysbus, self._avahi_change)
         self._avahi.config_stypes(stas.CNF.get_stypes())
+        print(_avahi.info)
 
         # We don't want to apply configuration changes to nvme-cli right away.
         # Often, multiple changes will occur in a short amount of time (sub-second).
