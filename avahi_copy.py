@@ -325,16 +325,16 @@ class Avahi:  # pylint: disable=too-many-instance-attributes
         *_user_data
     ):
         (interface, protocol, name, stype, domain, flags) = args
-        printf(
-            'Avahi._service_discovered()        - interface=%s (%s), protocol=%s, stype=%s, domain=%s, flags=%s %-14s name=%s',
-            interface,
+        print(
+            'Avahi._service_discovered()        - interface=%s (%s), protocol=%s, stype=%s, domain=%s, flags=%s %-14s name=%s' %
+            (interface,
             socket.if_indextoname(interface),
             Avahi.protocol_as_string(protocol),
             stype,
             domain,
             flags,
             '(' + Avahi.result_flags_as_string(flags) + '),',
-            name,
+            name)
         )
 
         service = (interface, protocol, name, stype, domain)
