@@ -33,7 +33,7 @@ int main() {
         
     int len, n; 
     len = sizeof(cliaddr);
-    n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len); 
+    n = recvfrom(sockfd, (char *)buffer, MAXLINE, 0, ( struct sockaddr *) &cliaddr, &len); 
 
     buffer[n] = '\0'; 
     printf("Message: %s.\n", buffer);  
