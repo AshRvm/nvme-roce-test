@@ -8,40 +8,24 @@
 #include <netinet/in.h> 
     
 #define PORT    4420 
-#define MAXLINE 1024 
     
-// Driver code 
 int main() { 
     int sockfd; 
-    char buffer[MAXLINE]; 
-    char *hello = "Hello from client"; 
-    struct sockaddr_in     servaddr; 
+    char *msg = "Hello"; 
+    struct sockaddr_in servaddr; 
     
-    // Creating socket file descriptor 
-    if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) { 
-        perror("socket creation failed"); 
-        exit(EXIT_FAILURE); 
-    } 
+    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+    if(sockfd < 0){
+        exit(1);
+    }
     
     memset(&servaddr, 0, sizeof(servaddr)); 
-        
-    // Filling server information 
+         
     servaddr.sin_family = AF_INET; 
     servaddr.sin_port = htons(PORT); 
     servaddr.sin_addr.s_addr = INADDR_ANY; 
         
-    int n, len; 
-        
-    sendto(sockfd, (const char *)hello, strlen(hello), 
-        MSG_CONFIRM, (const struct sockaddr *) &servaddr,  
-            sizeof(servaddr)); 
-    printf("Hello message sent.\n"); 
-            
-    n = recvfrom(sockfd, (char *)buffer, MAXLINE,  
-                MSG_WAITALL, (struct sockaddr *) &servaddr, 
-                &len); 
-    buffer[n] = '\0'; 
-    printf("Server : %s\n", buffer); 
+    sendto(sockfd, (const char *)msg, strlen(msg), MSG_CONFIRM, (const struct sockaddr *) &servaddr, sizeof(servaddr)); 
     
     close(sockfd); 
     return 0; 

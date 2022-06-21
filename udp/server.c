@@ -10,48 +10,33 @@
 #define PORT    4420 
 #define MAXLINE 1024 
     
-// Driver code 
 int main() { 
     int sockfd; 
     char buffer[MAXLINE]; 
-    char *hello = "Hello from server"; 
     struct sockaddr_in servaddr, cliaddr; 
-        
-    // Creating socket file descriptor 
-    if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) { 
-        perror("socket creation failed"); 
-        exit(EXIT_FAILURE); 
-    } 
+
+    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+    if(sockfd < 0){
+        exit(1);
+    }    
         
     memset(&servaddr, 0, sizeof(servaddr)); 
     memset(&cliaddr, 0, sizeof(cliaddr)); 
         
-    // Filling server information 
-    servaddr.sin_family    = AF_INET; // IPv4 
-    servaddr.sin_addr.s_addr = INADDR_ANY; 
+    servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(PORT); 
+    servaddr.sin_addr.s_addr = INADDR_ANY; 
         
-    // Bind the socket with the server address 
-    if ( bind(sockfd, (const struct sockaddr *)&servaddr,  
-            sizeof(servaddr)) < 0 ) 
-    { 
-        perror("bind failed"); 
-        exit(EXIT_FAILURE); 
+    if(bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr)) < 0){ 
+        exit(1);
     } 
         
     int len, n; 
-    
-    len = sizeof(cliaddr);  //len is value/result 
-    
-    n = recvfrom(sockfd, (char *)buffer, MAXLINE,  
-                MSG_WAITALL, ( struct sockaddr *) &cliaddr, 
-                &len); 
+    len = sizeof(cliaddr);
+    n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len); 
+
     buffer[n] = '\0'; 
-    printf("Client : %s\n", buffer); 
-    sendto(sockfd, (const char *)hello, strlen(hello),  
-        MSG_CONFIRM, (const struct sockaddr *) &cliaddr, 
-            len); 
-    printf("Hello message sent.\n");  
+    printf("Message: %s.\n", buffer);  
         
     return 0; 
 }
