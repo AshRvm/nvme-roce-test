@@ -6,6 +6,7 @@
 #include <sys/socket.h> 
 #include <arpa/inet.h> 
 #include <netinet/in.h> 
+#include "bth.h"
     
 #define PORT    4420 
 #define MAXLINE 1024 
