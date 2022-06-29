@@ -13,7 +13,8 @@
     
 int main() { 
     int sockfd; 
-    char buffer[MAXLINE]; 
+    // char buffer[MAXLINE]; 
+    uint8_t buffer[MAXLINE];
     struct sockaddr_in servaddr, cliaddr; 
 
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
@@ -34,10 +35,17 @@ int main() {
         
     int len, n; 
     len = sizeof(cliaddr);
-    n = recvfrom(sockfd, (char *)buffer, MAXLINE, 0, ( struct sockaddr *) &cliaddr, &len); 
+    n = recvfrom(sockfd, (uint8_t *)buffer, MAXLINE, 0, ( struct sockaddr *) &cliaddr, &len); 
+    struct bth *rec_bth = (struct bth *)buffer;
+    uint8_t a1 = rec_bth->opcode;
+    uint8_t a2 = rec_bth->flags;
+    uint16_t a3 = ntohs(rec_bth-> pkey);
+    uint32_t a4 = ntohl(rec_bth-> qpn);
+    uint32_t a5 = ntohl(rec_bth->apsn);
+    printf("Decoded: opcode=0x%02x flags=0x%02x pkey=0x%04x qpn=0x%06x apsn=0x%06x\n", a1, a2, a3, a4, a5);
 
-    buffer[n] = '\0'; 
-    printf("Message: %s.\n", buffer);  
+    // buffer[n] = '\0'; 
+    // printf("Message: %s.\n", buffer);  
         
     return 0; 
 }
