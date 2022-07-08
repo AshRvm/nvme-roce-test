@@ -28,7 +28,7 @@ int main() {
 
     uint8_t *a = (uint8_t *)&transportHeader;
 
-    printf("0x%024\n", *a);
+    printf("0x%024x\n", *a);
 
     // // uint8_t b = *a;
     // // uint16_t c = *a; 
